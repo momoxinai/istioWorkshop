@@ -1,0 +1,626 @@
+{
+    "workshopName": "Istio Workshop",
+    "templates": ["Videos",  "Instructions",  "Interactives"],
+    "components": ["LU_1", "LU_2"],
+    "videos": [
+        {
+            "learningUnitName": "LU_1",
+            "uid": "c2e43000-73ac-4096-8aea-e5ec5f971bde",
+            "forcePlaybackCompletion": true
+        },
+        {
+            "learningUnitName": "LU_2",
+            "uid": "0a1bd636-b460-40cf-b605-e45d9608da9b",
+            "forcePlaybackCompletion": false
+        }
+    ],
+    "instructions": [
+        {
+            "learningUnitName": "LU_1",
+            "name": "Instructions_zh.md",
+            "forceCompleteScrollDown": true
+        },
+        {
+            "learningUnitName": "LU_1",
+            "name": "Instructions_en.md",
+            "forceCompleteScrollDown": true
+        },
+        {
+            "learningUnitName": "LU_2",
+            "name": "Instructions_zh.md",
+            "forceCompleteScrollDown": false
+        },
+        {
+            "learningUnitName": "LU_2",
+            "name": "Instructions_en.md",
+            "forceCompleteScrollDown": false
+        }
+    ],
+    "interactives": [
+        {
+            "learningUnitName": "LU_2",
+            "sequences": [
+                {
+                    "sequenceId": 1,
+                    "name": "Install minikube v0.24.1",
+                    "description": "Install the v0.24.1 minikube and add the minikube to the default path",
+                    "requiredInput": "curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.24.1/minikube-darwin-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 2,
+                    "name": "Install kubectl step 1",
+                    "description": "1/3 of installing kubectl: download the kubectl client",
+                    "requiredInput": "curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/darwin/amd64/kubectl",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 3,
+                    "name": "Install kubectl step 2",
+                    "description": "2/3 of installing kubectl: set the permissions of the kubectl client",
+                    "requiredInput": "chmod +x ./kubectl",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 4, 
+                    "name": "Install kubectl step 3",
+                    "description": "3/3 of installing kubectl: add the kubectl to the default path",
+                    "requriedInput": "sudo mv ./kubectl /usr/local/bin/kubectl",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 5,
+                    "name": "Install VirtualBox",
+                    "description": "Download virtual box from https://download.virtualbox.org/virtualbox/5.2.8/VirtualBox-5.2.8-121009-OSX.dmg",
+                    "requriedInput": "",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 6,
+                    "name": "Start Minikube",
+                    "description": "Start the minikube with k8s 1.9.0 on local machine with the vitualbox driver",
+                    "requriedInput": "minikube start --extra-config=controller-manager.ClusterSigningCertFile=\"/var/lib/localkube/certs/ca.crt\" --extra-config=controller-manager.ClusterSigningKeyFile=\"/var/lib/localkube/certs/ca.key\" --extra-config=apiserver.Admission.PluginNames=NamespaceLifecycle,LimitRanger,ServiceAccount,PersistentVolumeLabel,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota --memory=8096 --kubernetes-version=v1.9.0",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 7,
+                    "name": "Switch kubectl context to minikube",
+                    "description": "Switch kubectl context to minikube",
+                    "requriedInput": "kubectl config use-context minikube",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 8,
+                    "name": "Check kubectl and minikube status",
+                    "description": "Check the healthy of local kubectl client and minikube server",
+                    "requiredInput": "kubectl version",
+                    "expectedOutputsLines": [
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "Client Version",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Server Version",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sequenceId": 9,
+                    "name": "Install istio v0.7.1 step 1",
+                    "description": "1:2 of installing the istio of version 0.7.1, download the istio and unzip",
+                    "requiredInput": "curl -L https://github.com/istio/istio/releases/download/0.7.1/istio-0.7.1-osx.tar.gz | tar xz",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 10,
+                    "name": "Install istio v0.7.1 step 2",
+                    "description": "2:2 of installing the istio of version 0.7.1, export the istio PATH",
+                    "requiredInput": "export PATH=$PWD/istio-0.7.1/bin:$PATH",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 11,
+                    "name": "Step into the istio folder",
+                    "description": "Step into the istio folder",
+                    "requiredInput": "cd istio-0.7.1",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 12,
+                    "name": "Deploy the istio v0.7.1",
+                    "description": "Deploy the istio v0.7.1 related components",
+                    "requiredInput": "kubectl apply -f install/kubernetes/istio.yaml & kubectl create -f install/kubernetes/addons/grafana.yaml & kubectl create -f install/kubernetes/addons/servicegraph.yaml & kubectl create -f install/kubernetes/addons/prometheus.yaml & kubectl create -f install/kubernetes/addons/zipkin.yaml",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 13,
+                    "name": "Check istio components",
+                    "description": "Check istio related components",
+                    "requiredInput": "kubectl get pods -n istio-system | awk 'NR>1'",
+                    "expectedOutputsLines": [
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "grafana",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "istio-ca",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "istio-ca",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "istio-mixer",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "istio-pilot",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "prometheus",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "servicegraph",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "zipkin",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sequenceId": 14,
+                    "name": "Deploy bookinfo application",
+                    "description": "Deploy the application microservices",
+                    "requiredInput": "kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/kube/bookinfo.yaml)",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 15,
+                    "name": "Check bookmark components",
+                    "description": "Check bookmark application components",
+                    "requiredInput": "kubectl get pods | awk 'NR>1'",
+                    "expectedOutputsLines": [
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "details-v1",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "productpage-v1",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "ratings-v1",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "istio-mixer",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "reviews-v1",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "reviews-v2",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "reviews-v3",
+                                    "itemOperation": "Contains"
+                                },
+                                {
+                                    "itemValue": "Running",
+                                    "itemOperation": "Contains"
+                                }
+                            ],
+                            "lineOperations": [
+                                {
+                                    "operation": "And",
+                                    "targets": [
+                                        0,1
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "sequenceId": 16,
+                    "name": "Retrive the GATEWAY PORT of the application",
+                    "description": "Retrive the GATEWAY PORT of the application",
+                    "requiredInput": "export GATEWAY_PORT=$(kubectl get svc istio-ingress -n istio-system -o 'jsonpath={.spec.ports[0].nodePort}')",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 17,
+                    "name": "Retrive the GATEWAY endppint",
+                    "description": "Gernerate the gateway by combining the gatewat ip and gateway port",
+                    "requiredInput": "export GATEWAY_URL=$GATEWAY_IP:$GATEWAY_PORT",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 18,
+                    "name": "Verify the application in the brwoser",
+                    "description": "Verify the application in the brwoser",
+                    "requiredInput": "open -a \"Google Chrome\" http://${GATEWAY_URL}/productpage",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 19,
+                    "name": "Visualize the bookinfo application using Istio Service Graph",
+                    "description": "Visualize the bookinfo application using istio Service Graph",
+                    "requiredInput": "kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=servicegraph -o jsonpath='{.items[0].metadata.name}') 8088:8088 &",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 20,
+                    "name": "Verify the bookinfo application in the brwoser",
+                    "description": "Verify the bookinfo application in the brwoser",
+                    "requiredInput": "open -a \"Google Chrome\" http://localhost:8088/force/forcegraph.html",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 21,
+                    "name": "Create the routing rule for V1",
+                    "description": "First of all let's generate a rule that dictates that all the content goes to V1. This will simulate a real production environment where you are running version 1 of your application.",
+                    "requiredInput": "istioctl create -f samples/bookinfo/kube/route-rule-all-v1.yaml",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 22,
+                    "name": "Verify the newly generated rule for V1",
+                    "description": "Verify the newly generated rule for V1",
+                    "requiredInput": "istioctl get routerules | awk 'NR>1'",
+                    "expectedOutputsLines": [
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "details-default",
+                                    "itemOperation": "Equals"
+                                }
+                            ],
+                            "lineOperations": []
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "productpage-default",
+                                    "itemOperation": "Equals"
+                                }
+                            ],
+                            "lineOperations": []
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "ratings-default",
+                                    "itemOperation": "Equals"
+                                }
+                            ],
+                            "lineOperations": []
+                        },
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "reviews-default",
+                                    "itemOperation": "Equals"
+                                }
+                            ],
+                            "lineOperations": []
+                        }
+                    ]
+                },
+                {
+                    "sequenceId": 23,
+                    "name": "Create the routing rule for V2",
+                    "description": "、let's change the current Route Rule to make only the user Jason to see the Ratings V2",
+                    "requiredInput": "istioctl create -f samples/bookinfo/kube/route-rule-reviews-test-v2.yaml",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 24,
+                    "name": "Verify the newly generated rule for V2",
+                    "description": "Verify the newly generated rule for V2",
+                    "requiredInput": "istioctl get routerules | grep v2",
+                    "expectedOutputsLines": [
+                        {
+                            "items": [
+                                {
+                                    "itemValue": "reviews-test-v2",
+                                    "itemOperation": "Equals"
+                                }
+                            ],
+                            "lineOperations": []
+                        }
+                    ]
+                },
+                {
+                    "sequenceId": 25,
+                    "name": "Downlaod traffic generation script",
+                    "description": "Download the traffic generation script",
+                    "requiredInput": "wget https://s3-us-west-2.amazonaws.com/workshopscript/istio/trafficGeneration.sh",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 26,
+                    "name": "Enable the grafana",
+                    "description": "Enable the grafana",
+                    "requiredInput": "kubectl -n istio-system port-forward $(kubectl -n istio-system get pod -l app=grafana -o jsonpath='{.items[0].metadata.name}') 3000:3000 &",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 27,
+                    "name": "Verify the grafana",
+                    "description": "Open the browser and verify the grafana",
+                    "requiredInput": "open -a \"Google Chrome\" http://localhost:3000/dashboard/db/istio-dashboard",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 28,
+                    "name": "Enable the zipkin",
+                    "description": "Enable the zipkin",
+                    "requiredInput": "kubectl port-forward -n istio-system $(kubectl get pod -n istio-system -l app=zipkin -o jsonpath='{.items[0].metadata.name}') 9411:9411 &",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 29,
+                    "name": "Verify the zipkin",
+                    "description": "Open the browser and verify the zipkin",
+                    "requiredInput": "open -a \"Google Chrome\" http://localhost:9411",
+                    "expectedOutputsLines": []
+                },
+                {
+                    "sequenceId": 30,
+                    "name": "Tear down all the services and minikube",
+                    "description": "Tear down all the services and minikube",
+                    "requiredInput": "minikube stop & minikube delete",
+                    "expectedOutputsLines": []
+                }
+            ]
+        }
+    ]
+}
