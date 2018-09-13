@@ -1,0 +1,32 @@
+{   
+    "id": "084d10b9-93f4-11e7-a486-02420ae95e0e",
+    "name": "Sample Learning Unit",
+    "description": "Sample Learning Unit",
+    "url": "",
+    "type": "LearningUnit",
+    "status": "",
+    "meta": {},
+    "complexity": "",
+    "categories": [
+    ],
+    "products": [
+    ],
+    "industries": [],
+    "programmingLanguages": [
+    ],
+    "technologyAreas": [],
+    "additionalTags": [
+    ],
+    "featured": 0,
+    "importance": 1,
+    "userLikeCount": 0,
+    "userViewCount": 0,
+    "contentOwners": null,
+    "contentContributors": null,
+    "contentSubtype": "",
+    "contentFullText": "",
+    "contentCreationTime": "1990-01-01T00:00:00Z",
+    "contentLastUpdateTime": "2018-03-15T19:48:28Z",
+    "regions": null,
+    "paths": null
+}
